@@ -1,3 +1,38 @@
+/* src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles for cloudbatsX blog */
+@layer base {
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better link styling for articles */
+  .prose a {
+    @apply text-blue-600 dark:text-blue-400 hover:underline;
+  }
+
+  /* Code block improvements */
+  .prose pre {
+    @apply bg-slate-900 dark:bg-slate-950 rounded-lg;
+  }
+
+  .prose code {
+    @apply text-sm;
+  }
+
+  /* Inline code styling */
+  .prose :not(pre) > code {
+    @apply bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm;
+  }
+}
+
+@layer utilities {
+  /* Selection highlight */
+  ::selection {
+    @apply bg-blue-200 dark:bg-blue-800;
+  }
+}

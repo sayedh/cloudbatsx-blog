@@ -1,4 +1,7 @@
-export const EXAMPLE_PATH = "blog-starter";
-export const CMS_NAME = "Markdown";
+// src/lib/constants.ts
+export const SITE_NAME = "cloudbatsX";
+export const SITE_URL = "https://blog.cloudbats.com";
 export const HOME_OG_IMAGE_URL =
-  "https://og-image.vercel.app/Next.js%20Blog%20Starter%20Example.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg";
+  "https://blog.cloudbats.com/assets/og-image.png";
+export const GITHUB_URL = "https://github.com/sayedh/cloudbatsx-blog";
+export const PORTFOLIO_URL = "https://sayedh.com";
