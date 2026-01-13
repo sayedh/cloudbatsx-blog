@@ -168,7 +168,7 @@
   color: #64748b;
 }
 
-/* Code */
+/* Code - Terminal Style */
 .markdown pre {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -178,6 +178,7 @@
   border: 1px solid #1e293b;
   overflow-x: auto;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 :global(.dark) .markdown pre {

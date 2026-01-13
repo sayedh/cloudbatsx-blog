@@ -7,6 +7,16 @@ import { Avatar, CoverImage, DateFormatter } from "./ui";
 import markdownStyles from "./markdown-styles.module.css";
 
 // ============================================
+// Reading Time Utility
+// ============================================
+export function calculateReadingTime(content: string): string {
+  const wordsPerMinute = 200;
+  const words = content.trim().split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return `${minutes} min read`;
+}
+
+// ============================================
 // PostTitle
 // ============================================
 type PostTitleProps = {
@@ -47,6 +57,7 @@ type PostHeaderProps = {
   coverImage: string;
   date: string;
   author: Author;
+  readingTime?: string;
 };
 
 export function PostHeader({
@@ -54,22 +65,34 @@ export function PostHeader({
   coverImage,
   date,
   author,
+  readingTime,
 }: PostHeaderProps) {
   return (
     <header className="mb-16 md:mb-20">
       {/* Title */}
       <PostTitle>{title}</PostTitle>
 
-      {/* Meta info */}
+      {/* Meta info - Terminal style */}
       <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-8 md:mb-12">
         <Avatar name={author.name} picture={author.picture} />
-        <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+        
+        {/* Terminal-style date and reading time */}
+        <div className="flex items-center gap-3 font-mono text-sm">
           <span className="hidden md:block w-px h-6 bg-slate-300 dark:bg-slate-700" />
+          <span className="text-slate-500 dark:text-slate-500">$</span>
+          <span className="text-cyan-600 dark:text-cyan-400">date</span>
+          <span className="text-slate-400 dark:text-slate-600">--</span>
           <DateFormatter dateString={date} />
+          {readingTime && (
+            <>
+              <span className="text-slate-300 dark:text-slate-700">|</span>
+              <span className="text-emerald-600 dark:text-emerald-400">{readingTime}</span>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Cover image */}
+      {/* Cover image - no slug since this is the post page itself */}
       <div className="relative rounded-2xl overflow-hidden shadow-2xl">
         <CoverImage title={title} src={coverImage} />
         {/* Gradient overlay at bottom */}
@@ -89,6 +112,7 @@ type PostPreviewProps = {
   excerpt: string;
   author: Author;
   slug: string;
+  readingTime?: string;
 };
 
 export function PostPreview({
@@ -98,13 +122,19 @@ export function PostPreview({
   excerpt,
   author,
   slug,
+  readingTime,
 }: PostPreviewProps) {
   return (
     <article className="group glass-card glow overflow-hidden hover-lift">
-      {/* Image container */}
+      {/* Image container - Link wraps the image area */}
       <Link href={`/posts/${slug}`} className="block img-zoom">
         <div className="relative aspect-[16/9] overflow-hidden">
-          <CoverImage slug={slug} title={title} src={coverImage} priority={false} />
+          {/* Don't pass slug to CoverImage since we're already inside a Link */}
+          <CoverImage
+            title={title}
+            src={coverImage}
+            priority={false}
+          />
           {/* Hover overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           {/* Read more indicator */}
@@ -131,9 +161,16 @@ export function PostPreview({
 
       {/* Content */}
       <div className="p-6">
-        {/* Date */}
-        <div className="text-sm text-slate-500 dark:text-slate-500 mb-3">
+        {/* Terminal-style date and reading time */}
+        <div className="flex items-center gap-2 mb-3 font-mono text-xs text-slate-500 dark:text-slate-500">
+          <span className="text-cyan-600 dark:text-cyan-500">$</span>
           <DateFormatter dateString={date} />
+          {readingTime && (
+            <>
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <span className="text-emerald-600 dark:text-emerald-500">{readingTime}</span>
+            </>
+          )}
         </div>
 
         {/* Title */}
@@ -167,6 +204,7 @@ type HeroPostProps = {
   excerpt: string;
   author: Author;
   slug: string;
+  readingTime?: string;
 };
 
 export function HeroPost({
@@ -176,29 +214,33 @@ export function HeroPost({
   excerpt,
   author,
   slug,
+  readingTime = "5 min read",
 }: HeroPostProps) {
   return (
     <section className="relative mb-20 md:mb-28">
       {/* Featured badge */}
       <div className="mb-6">
-        <span className="tag">
+        <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-full">
           <svg
-            className="w-3 h-3 mr-1"
+            className="w-4 h-4 text-amber-500"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
-          Featured Post
+          <span className="text-amber-600 dark:text-amber-400 text-sm font-medium">
+            Featured Post
+          </span>
         </span>
       </div>
 
       <article className="group glass-card glow overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-0">
-          {/* Image */}
+          {/* Image - Link wraps this section */}
           <Link href={`/posts/${slug}`} className="block img-zoom">
             <div className="relative aspect-[16/10] lg:aspect-auto lg:h-full overflow-hidden">
-              <CoverImage slug={slug} title={title} src={coverImage} priority />
+              {/* Don't pass slug to CoverImage since we're already inside a Link */}
+              <CoverImage title={title} src={coverImage} priority />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-900/10 dark:to-slate-900/30 lg:bg-gradient-to-l" />
             </div>
@@ -206,22 +248,16 @@ export function HeroPost({
 
           {/* Content */}
           <div className="p-8 lg:p-10 xl:p-12 flex flex-col justify-center">
-            {/* Date */}
-            <div className="text-sm text-slate-500 dark:text-slate-500 mb-4 flex items-center gap-2">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
+            {/* Terminal-style meta */}
+            <div className="flex flex-wrap items-center gap-3 mb-4 font-mono text-sm">
+              <span className="text-slate-500 dark:text-slate-500">$</span>
+              <span className="text-cyan-600 dark:text-cyan-400">date</span>
+              <span className="text-slate-400 dark:text-slate-600">--</span>
               <DateFormatter dateString={date} />
+              <span className="text-slate-300 dark:text-slate-700">|</span>
+              <span className="text-emerald-600 dark:text-emerald-400">
+                {readingTime}
+              </span>
             </div>
 
             {/* Title */}
@@ -289,13 +325,12 @@ export function MoreStories({ posts }: MoreStoriesProps) {
             Explore more articles and tutorials
           </p>
         </div>
-        {/* Optional: View all link */}
-        {/* <Link href="/posts" className="btn-ghost hidden md:flex">
-          View all
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </Link> */}
+        {/* Terminal-style decoration */}
+        <div className="hidden md:flex items-center gap-2 font-mono text-sm text-slate-400 dark:text-slate-500">
+          <span>$</span>
+          <span className="text-cyan-600 dark:text-cyan-400">ls</span>
+          <span>-la posts/</span>
+        </div>
       </div>
 
       {/* Posts grid */}
@@ -304,7 +339,10 @@ export function MoreStories({ posts }: MoreStoriesProps) {
           <div
             key={post.slug}
             className="opacity-0 animate-fade-in-up"
-            style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
+            style={{
+              animationDelay: `${index * 100}ms`,
+              animationFillMode: "forwards",
+            }}
           >
             <PostPreview
               title={post.title}
@@ -313,6 +351,9 @@ export function MoreStories({ posts }: MoreStoriesProps) {
               author={post.author}
               slug={post.slug}
               excerpt={post.excerpt}
+              readingTime={
+                post.content ? calculateReadingTime(post.content) : undefined
+              }
             />
           </div>
         ))}

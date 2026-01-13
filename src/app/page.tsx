@@ -11,10 +11,15 @@ export default function Index() {
 
   return (
     <main className="relative">
-      {/* Background decoration - visible on larger screens */}
+      {/* Background ambient effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -left-20 w-60 h-60 bg-blue-500/5 rounded-full blur-3xl" />
+        {/* Top darkening for cave effect */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-slate-100 dark:from-slate-900 to-transparent opacity-80" />
+        
+        {/* Gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 dark:bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-indigo-500/5 dark:bg-indigo-500/5 rounded-full blur-3xl" />
       </div>
 
       <Container>
@@ -25,7 +30,10 @@ export default function Index() {
 
         {/* Featured/Hero post */}
         {heroPost && (
-          <div className="animate-fade-in-up" style={{ animationDelay: "150ms" }}>
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: "150ms" }}
+          >
             <HeroPost
               title={heroPost.title}
               coverImage={heroPost.coverImage}
@@ -39,7 +47,10 @@ export default function Index() {
 
         {/* More posts grid */}
         {morePosts.length > 0 && (
-          <div className="animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: "300ms" }}
+          >
             <MoreStories posts={morePosts} />
           </div>
         )}

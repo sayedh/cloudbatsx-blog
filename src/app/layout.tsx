@@ -94,7 +94,11 @@ export default function RootLayout({
           "transition-colors duration-300"
         )}
       >
+        
+        {/* Theme switcher */}
         <ThemeSwitcher />
+        
+        
         <div className="min-h-screen flex flex-col">
           <div className="flex-1">{children}</div>
           <Footer />

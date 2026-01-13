@@ -10,7 +10,6 @@ declare global {
 type ColorSchemePreference = "system" | "dark" | "light";
 
 const STORAGE_KEY = "nextjs-blog-starter-theme";
-const modes: ColorSchemePreference[] = ["light", "dark", "system"];
 
 /** function to be injected in script tag for avoiding FOUC (Flash of Unstyled Content) */
 export const NoFOUCScript = (storageKey: string) => {
@@ -102,7 +101,9 @@ const Switch = () => {
   useEffect(() => {
     setMounted(true);
     updateDOM = window.updateDOM;
-    const stored = localStorage.getItem(STORAGE_KEY) as ColorSchemePreference | null;
+    const stored = localStorage.getItem(
+      STORAGE_KEY
+    ) as ColorSchemePreference | null;
     if (stored) setMode(stored);
 
     const handleStorage = (e: StorageEvent): void => {
@@ -136,14 +137,17 @@ const Switch = () => {
 
   return (
     <div className="fixed top-4 right-4 z-50">
-      <div className="flex items-center gap-1 p-1 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-full border border-slate-200 dark:border-slate-700 shadow-lg">
+      {/* Terminal-style theme switcher */}
+      <div className="flex items-center gap-1 px-2 py-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg font-mono text-xs">
+        <span className="text-slate-400 dark:text-slate-500 mr-1">theme:</span>
+
         {/* Light mode button */}
         <button
           onClick={() => handleModeSwitch("light")}
           className={cn(
-            "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200",
+            "flex items-center justify-center px-2 py-1 rounded transition-all duration-200",
             mode === "light"
-              ? "bg-amber-100 text-amber-600 shadow-sm"
+              ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800"
               : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
           )}
           aria-label="Light mode"
@@ -156,9 +160,9 @@ const Switch = () => {
         <button
           onClick={() => handleModeSwitch("dark")}
           className={cn(
-            "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200",
+            "flex items-center justify-center px-2 py-1 rounded transition-all duration-200",
             mode === "dark"
-              ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 shadow-sm"
+              ? "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800"
               : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
           )}
           aria-label="Dark mode"
@@ -171,9 +175,9 @@ const Switch = () => {
         <button
           onClick={() => handleModeSwitch("system")}
           className={cn(
-            "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200",
+            "flex items-center justify-center px-2 py-1 rounded transition-all duration-200",
             mode === "system"
-              ? "bg-cyan-100 dark:bg-cyan-900/50 text-cyan-600 dark:text-cyan-400 shadow-sm"
+              ? "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800"
               : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
           )}
           aria-label="System preference"
@@ -193,6 +197,8 @@ const Script = memo(() => (
     }}
   />
 ));
+
+Script.displayName = "ThemeScript";
 
 export const ThemeSwitcher = () => {
   return (

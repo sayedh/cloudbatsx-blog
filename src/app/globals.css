@@ -11,7 +11,7 @@
   --color-brand-blue: 59 130 246;
   --color-brand-indigo: 99 102 241;
   --color-brand-purple: 139 92 246;
-  
+
   /* Light mode */
   --bg-primary: 255 255 255;
   --bg-secondary: 248 250 252;
@@ -49,15 +49,25 @@ body {
   background-color: rgba(34, 211, 238, 0.3);
 }
 
-/* Dark mode body with mesh gradient */
+/* Dark mode body with cave-like atmosphere */
 .dark body {
   background-color: #020617;
-  background-image: 
-    radial-gradient(at 40% 20%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, rgba(6, 182, 212, 0.06) 0px, transparent 50%),
-    radial-gradient(at 80% 50%, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.06) 0px, transparent 50%);
+  background-image:
+    radial-gradient(at 40% 20%, rgba(6, 182, 212, 0.06) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(59, 130, 246, 0.04) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(6, 182, 212, 0.04) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, rgba(99, 102, 241, 0.04) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.04) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Light mode subtle gradient */
+body {
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(at 40% 20%, rgba(6, 182, 212, 0.03) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(59, 130, 246, 0.02) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(6, 182, 212, 0.02) 0px, transparent 50%);
   background-attachment: fixed;
 }
 
@@ -85,13 +95,15 @@ body {
   color: #67e8f9;
 }
 
-/* Code blocks */
+/* Code blocks - Terminal style */
 .prose pre {
   background-color: #0f172a;
-  border-radius: 0.75rem;
+  border-radius: 0 0 0.75rem 0.75rem;
   border: 1px solid #1e293b;
+  border-top: none;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
+  position: relative;
 }
 
 .dark .prose pre {
@@ -101,6 +113,7 @@ body {
 
 .prose code {
   font-size: 0.875rem;
+  font-family: var(--font-jetbrains), monospace;
 }
 
 /* Inline code */
@@ -111,6 +124,7 @@ body {
   font-size: 0.875rem;
   color: #0e7490;
   border: 1px solid #e2e8f0;
+  font-family: var(--font-jetbrains), monospace;
 }
 
 .dark .prose :not(pre) > code {
@@ -120,13 +134,19 @@ body {
 }
 
 /* Headings */
-.prose h1, .prose h2, .prose h3, .prose h4 {
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
   font-family: var(--font-space-grotesk), system-ui, sans-serif;
   font-weight: 700;
   color: #0f172a;
 }
 
-.dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 {
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4 {
   color: #ffffff;
 }
 
@@ -164,24 +184,24 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid #e2e8f0;
     border-radius: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
   }
 
   .dark .glass-card {
-    background-color: rgba(15, 23, 42, 0.5);
+    background-color: rgba(15, 23, 42, 0.6);
     border-color: rgba(51, 65, 85, 0.5);
     box-shadow: none;
   }
 
   .glass-card:hover {
     border-color: #cbd5e1;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
   }
 
   .dark .glass-card:hover {
     border-color: rgba(71, 85, 105, 0.5);
-    box-shadow: 0 0 40px rgba(6, 182, 212, 0.15);
+    box-shadow: 0 0 40px rgba(6, 182, 212, 0.1);
   }
 
   /* Gradient text */
@@ -207,7 +227,7 @@ body {
   }
 
   .glow::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: -4px;
     background: linear-gradient(to right, #06b6d4, #3b82f6);
@@ -219,7 +239,7 @@ body {
   }
 
   .glow:hover::after {
-    opacity: 0.2;
+    opacity: 0.15;
   }
 
   /* Button styles */
@@ -316,6 +336,47 @@ body {
   .dark .tag {
     color: #22d3ee;
   }
+
+  /* Terminal-style code block header */
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-bottom: none;
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+
+  .dark .code-header {
+    background-color: #0f172a;
+    border-color: #334155;
+  }
+
+  .code-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .code-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 9999px;
+  }
+
+  .code-dot-red {
+    background-color: rgba(239, 68, 68, 0.8);
+  }
+
+  .code-dot-yellow {
+    background-color: rgba(234, 179, 8, 0.8);
+  }
+
+  .code-dot-green {
+    background-color: rgba(34, 197, 94, 0.8);
+  }
 }
 
 /* ============================================
@@ -350,7 +411,7 @@ body {
   }
 
   .animated-underline::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -371,13 +432,19 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  /* Terminal cursor blink */
+  .cursor-blink {
+    animation: cursorBlink 1s step-end infinite;
+  }
 }
 
 /* ============================================
    Animations
    ============================================ */
 @keyframes gradientX {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
@@ -402,6 +469,16 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes cursorBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 
