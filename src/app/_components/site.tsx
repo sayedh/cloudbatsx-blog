@@ -5,7 +5,7 @@ import Link from "next/link";
 import cn from "classnames";
 import { useState, useEffect } from "react";
 import { Container } from "./ui";
-import { SITE_NAME, GITHUB_URL, PORTFOLIO_URL } from "@/lib/constants";
+import { SITE_NAME, GITHUB_URL, CLOUDBATS_URL } from "@/lib/constants";
 
 // ============================================
 // Header (for post pages)
@@ -59,16 +59,17 @@ export function Footer() {
             {/* Brand section */}
             <div className="text-center lg:text-left">
               <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">
-                <span className="gradient-text">{SITE_NAME}</span>
+                <span className="text-slate-900 dark:text-white">cloudbats</span>
+                <span className="gradient-text-animated">X</span>
               </h3>
               <p className="text-slate-600 dark:text-slate-400 max-w-md">
                 Cloud infrastructure, DevOps automation, and full-stack
                 development insights by{" "}
                 <a
-                  href={PORTFOLIO_URL}
+                  href={CLOUDBATS_URL}
                   className="text-cyan-600 dark:text-cyan-400 hover:underline"
                 >
-                  Cloud
+                  CloudBats
                 </a>
                 .
               </p>
@@ -86,7 +87,7 @@ export function Footer() {
 
           {/* Links section */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href={PORTFOLIO_URL} className="btn-primary">
+            <a href={CLOUDBATS_URL} className="btn-primary">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -97,10 +98,10 @@ export function Footer() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
                 />
               </svg>
-              Portfolio
+              CloudBats
             </a>
             <a href={GITHUB_URL} className="btn-ghost group">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -117,7 +118,7 @@ export function Footer() {
           {/* Bottom bar */}
           <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500 dark:text-slate-500">
             <p>
-              © {currentYear} {SITE_NAME}. All rights reserved.
+              &copy; {currentYear} {SITE_NAME}. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <a
