@@ -6,7 +6,11 @@ import { join } from "path";
 const postsDirectory = join(process.cwd(), "_posts");
 
 export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory);
+  // Only real posts: .md files, skipping anything starting with "_"
+  // (e.g. _TEMPLATE.md) so templates/drafts can live alongside posts.
+  return fs
+    .readdirSync(postsDirectory)
+    .filter((file) => file.endsWith(".md") && !file.startsWith("_"));
 }
 
 export function getPostBySlug(slug: string) {

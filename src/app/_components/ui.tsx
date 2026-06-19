@@ -6,6 +6,7 @@ import { parseISO, format } from "date-fns";
 import cn from "classnames";
 import Link from "next/link";
 import Image from "next/image";
+import { CaveMark } from "./cave-mark";
 
 // ============================================
 // Container
@@ -72,7 +73,7 @@ export function Avatar({ name, picture, size = "md" }: AvatarProps) {
 // ============================================
 type CoverImageProps = {
   title: string;
-  src: string;
+  src?: string;
   slug?: string;
   priority?: boolean;
 };
@@ -83,10 +84,10 @@ export function CoverImage({
   slug,
   priority = false,
 }: CoverImageProps) {
-  const image = (
+  const inner = src ? (
     <Image
       src={src}
-      alt={`Cover Image for ${title}`}
+      alt={`Cover image for ${title}`}
       className={cn(
         "w-full h-full object-cover transition-transform duration-500 ease-out",
         slug && "group-hover:scale-105"
@@ -95,20 +96,21 @@ export function CoverImage({
       priority={priority}
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
     />
+  ) : (
+    // Branded fallback when a post has no cover image yet.
+    <div className="flex h-full w-full items-center justify-center bg-navy" aria-hidden="true">
+      <CaveMark className="h-14 w-14 text-brand/40" />
+    </div>
   );
 
   return (
-    <div className="relative w-full h-full bg-slate-100 dark:bg-slate-800">
+    <div className="relative w-full h-full bg-surface">
       {slug ? (
-        <Link
-          href={`/posts/${slug}`}
-          aria-label={title}
-          className="block w-full h-full"
-        >
-          {image}
+        <Link href={`/posts/${slug}`} aria-label={title} className="block w-full h-full">
+          {inner}
         </Link>
       ) : (
-        image
+        inner
       )}
     </div>
   );

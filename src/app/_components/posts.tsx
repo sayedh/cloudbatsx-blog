@@ -4,6 +4,7 @@ import Link from "next/link";
 import { type Author } from "@/interfaces/author";
 import { type Post } from "@/interfaces/post";
 import { Avatar, CoverImage, DateFormatter } from "./ui";
+import { topicHref } from "@/lib/topics";
 import markdownStyles from "./markdown-styles.module.css";
 
 // ============================================
@@ -14,6 +15,24 @@ export function calculateReadingTime(content: string): string {
   const words = content.trim().split(/\s+/).length;
   const minutes = Math.ceil(words / wordsPerMinute);
   return `${minutes} min read`;
+}
+
+// Focus-area chip + an honest status note (building/exploring) for placeholders.
+export function PostTags({ focusArea, status }: { focusArea?: string; status?: string }) {
+  const showStatus = status && status.toLowerCase() !== "shipped";
+  if (!focusArea && !showStatus) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-2 mb-3">
+      {focusArea && (
+        <Link href={topicHref(focusArea)} className="tag focus-ring transition-colors hover:border-accent/50">
+          {focusArea}
+        </Link>
+      )}
+      {showStatus && (
+        <span className="text-xs font-medium text-fg-subtle">· {status}</span>
+      )}
+    </div>
+  );
 }
 
 // ============================================
@@ -54,10 +73,12 @@ export function PostBody({ content }: PostBodyProps) {
 // ============================================
 type PostHeaderProps = {
   title: string;
-  coverImage: string;
+  coverImage?: string;
   date: string;
   author: Author;
   readingTime?: string;
+  focusArea?: string;
+  status?: string;
 };
 
 export function PostHeader({
@@ -66,27 +87,24 @@ export function PostHeader({
   date,
   author,
   readingTime,
+  focusArea,
+  status,
 }: PostHeaderProps) {
   return (
     <header className="mb-16 md:mb-20">
-      {/* Title */}
+      <PostTags focusArea={focusArea} status={status} />
       <PostTitle>{title}</PostTitle>
 
-      {/* Meta info - Terminal style */}
+      {/* Meta info */}
       <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-8 md:mb-12">
         <Avatar name={author.name} picture={author.picture} />
-        
-        {/* Terminal-style date and reading time */}
-        <div className="flex items-center gap-3 font-mono text-sm">
-          <span className="hidden md:block w-px h-6 bg-slate-300 dark:bg-slate-700" />
-          <span className="text-slate-500 dark:text-slate-500">$</span>
-          <span className="text-cyan-600 dark:text-cyan-400">date</span>
-          <span className="text-slate-400 dark:text-slate-600">--</span>
+        <div className="flex items-center gap-3 text-sm text-fg-subtle">
+          <span className="hidden md:block w-px h-5 bg-border" />
           <DateFormatter dateString={date} />
           {readingTime && (
             <>
-              <span className="text-slate-300 dark:text-slate-700">|</span>
-              <span className="text-emerald-600 dark:text-emerald-400">{readingTime}</span>
+              <span aria-hidden="true">·</span>
+              <span>{readingTime}</span>
             </>
           )}
         </div>
@@ -107,12 +125,14 @@ export function PostHeader({
 // ============================================
 type PostPreviewProps = {
   title: string;
-  coverImage: string;
+  coverImage?: string;
   date: string;
   excerpt: string;
   author: Author;
   slug: string;
   readingTime?: string;
+  focusArea?: string;
+  status?: string;
 };
 
 export function PostPreview({
@@ -123,6 +143,8 @@ export function PostPreview({
   author,
   slug,
   readingTime,
+  focusArea,
+  status,
 }: PostPreviewProps) {
   return (
     <article className="group glass-card glow overflow-hidden hover-lift">
@@ -161,14 +183,13 @@ export function PostPreview({
 
       {/* Content */}
       <div className="p-6">
-        {/* Terminal-style date and reading time */}
-        <div className="flex items-center gap-2 mb-3 font-mono text-xs text-slate-500 dark:text-slate-500">
-          <span className="text-cyan-600 dark:text-cyan-500">$</span>
+        <PostTags focusArea={focusArea} status={status} />
+        <div className="flex items-center gap-2 mb-3 text-xs text-fg-subtle">
           <DateFormatter dateString={date} />
           {readingTime && (
             <>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span className="text-emerald-600 dark:text-emerald-500">{readingTime}</span>
+              <span aria-hidden="true">·</span>
+              <span>{readingTime}</span>
             </>
           )}
         </div>
@@ -199,12 +220,14 @@ export function PostPreview({
 // ============================================
 type HeroPostProps = {
   title: string;
-  coverImage: string;
+  coverImage?: string;
   date: string;
   excerpt: string;
   author: Author;
   slug: string;
   readingTime?: string;
+  focusArea?: string;
+  status?: string;
 };
 
 export function HeroPost({
@@ -214,24 +237,23 @@ export function HeroPost({
   excerpt,
   author,
   slug,
-  readingTime = "5 min read",
+  readingTime,
+  focusArea,
+  status,
 }: HeroPostProps) {
   return (
     <section className="relative mb-20 md:mb-28">
-      {/* Featured badge */}
-      <div className="mb-6">
-        <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-full">
-          <svg
-            className="w-4 h-4 text-amber-500"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          <span className="text-amber-600 dark:text-amber-400 text-sm font-medium">
-            Featured Post
-          </span>
-        </span>
+      {/* Latest badge + focus area + honest status */}
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        <span className="tag">Latest</span>
+        {focusArea && (
+          <Link href={topicHref(focusArea)} className="tag focus-ring transition-colors hover:border-accent/50">
+            {focusArea}
+          </Link>
+        )}
+        {status && status.toLowerCase() !== "shipped" && (
+          <span className="text-xs font-medium text-fg-subtle">· {status}</span>
+        )}
       </div>
 
       <article className="group glass-card glow overflow-hidden">
@@ -248,16 +270,14 @@ export function HeroPost({
 
           {/* Content */}
           <div className="p-8 lg:p-10 xl:p-12 flex flex-col justify-center">
-            {/* Terminal-style meta */}
-            <div className="flex flex-wrap items-center gap-3 mb-4 font-mono text-sm">
-              <span className="text-slate-500 dark:text-slate-500">$</span>
-              <span className="text-cyan-600 dark:text-cyan-400">date</span>
-              <span className="text-slate-400 dark:text-slate-600">--</span>
+            <div className="flex flex-wrap items-center gap-2 mb-4 text-sm text-fg-subtle">
               <DateFormatter dateString={date} />
-              <span className="text-slate-300 dark:text-slate-700">|</span>
-              <span className="text-emerald-600 dark:text-emerald-400">
-                {readingTime}
-              </span>
+              {readingTime && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span>{readingTime}</span>
+                </>
+              )}
             </div>
 
             {/* Title */}
@@ -316,21 +336,9 @@ export function MoreStories({ posts }: MoreStoriesProps) {
   return (
     <section className="mb-20 md:mb-32">
       {/* Section header */}
-      <div className="flex items-center justify-between mb-10">
-        <div>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
-            More Posts
-          </h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-2">
-            Explore more articles and tutorials
-          </p>
-        </div>
-        {/* Terminal-style decoration */}
-        <div className="hidden md:flex items-center gap-2 font-mono text-sm text-slate-400 dark:text-slate-500">
-          <span>$</span>
-          <span className="text-cyan-600 dark:text-cyan-400">ls</span>
-          <span>-la posts/</span>
-        </div>
+      <div className="mb-10">
+        <h2 className="font-display text-3xl md:text-4xl font-semibold text-fg">More posts</h2>
+        <p className="text-fg-muted mt-2">More writing on cloud, networks, and practical AI.</p>
       </div>
 
       {/* Posts grid */}
@@ -351,6 +359,8 @@ export function MoreStories({ posts }: MoreStoriesProps) {
               author={post.author}
               slug={post.slug}
               excerpt={post.excerpt}
+              focusArea={post.focusArea}
+              status={post.status}
               readingTime={
                 post.content ? calculateReadingTime(post.content) : undefined
               }

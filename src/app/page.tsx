@@ -1,39 +1,23 @@
 // src/app/page.tsx
+import Link from "next/link";
 import { Container } from "@/app/_components/ui";
-import { HeroPost, MoreStories } from "@/app/_components/posts";
-import { Intro } from "@/app/_components/site";
+import { HeroPost, MoreStories, calculateReadingTime } from "@/app/_components/posts";
+import { Intro, AreasOfFocus, CtaBand } from "@/app/_components/site";
 import { getAllPosts } from "@/lib/api";
 
 export default function Index() {
   const allPosts = getAllPosts();
   const heroPost = allPosts[0];
-  const morePosts = allPosts.slice(1);
+  const morePosts = allPosts.slice(1, 5);
 
   return (
-    <main className="relative">
-      {/* Background ambient effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        {/* Top darkening for cave effect */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-slate-100 dark:from-slate-900 to-transparent opacity-80" />
-        
-        {/* Gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 dark:bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-indigo-500/5 dark:bg-indigo-500/5 rounded-full blur-3xl" />
-      </div>
-
+    <main id="top">
       <Container>
-        {/* Hero intro section */}
-        <div className="animate-fade-in">
-          <Intro />
-        </div>
+        <Intro />
+        <AreasOfFocus />
 
-        {/* Featured/Hero post */}
-        {heroPost && (
-          <div
-            className="animate-fade-in-up"
-            style={{ animationDelay: "150ms" }}
-          >
+        <div id="latest">
+          {heroPost && (
             <HeroPost
               title={heroPost.title}
               coverImage={heroPost.coverImage}
@@ -41,19 +25,25 @@ export default function Index() {
               author={heroPost.author}
               slug={heroPost.slug}
               excerpt={heroPost.excerpt}
+              focusArea={heroPost.focusArea}
+              status={heroPost.status}
+              readingTime={heroPost.content ? calculateReadingTime(heroPost.content) : undefined}
             />
-          </div>
-        )}
+          )}
 
-        {/* More posts grid */}
-        {morePosts.length > 0 && (
-          <div
-            className="animate-fade-in-up"
-            style={{ animationDelay: "300ms" }}
-          >
-            <MoreStories posts={morePosts} />
+          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+
+          <div className="-mt-10 mb-20 md:mb-24">
+            <Link
+              href="/blog"
+              className="focus-ring inline-flex items-center gap-1.5 font-medium text-accent hover:text-fg transition-colors"
+            >
+              Browse all writing, by topic →
+            </Link>
           </div>
-        )}
+        </div>
+
+        <CtaBand />
       </Container>
     </main>
   );

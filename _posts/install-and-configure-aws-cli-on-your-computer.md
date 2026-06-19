@@ -3,6 +3,7 @@
     excerpt: "Learn how to install and configure the AWS CLI on your computer, enabling you to manage AWS services directly from your terminal."
     coverImage: "/images/image-35.png"
     date: "2022-06-28T00:00:00.000Z"
+    focusArea: "AWS"
     author:
         name: Sayed Haque
         picture: "/assets/blog/authors/sayed.jpg"
@@ -36,9 +37,7 @@ We can see that the aws command produces some help content. This means you have 
 
 CONGRATS!! You have just installed AWS CLI on you computer. Now we need to configure it. This means that we will connect this AWS CLI to your AWS account.
 
-In order to connect to our AWS account, we will need a user account. If you don't have a user account on your AWS account, please check out this page on how to create one.
-
-https://cloudbats.com/2022/06/26/create-users-in-aws-iam/
+In order to connect to our AWS account, we will need a user account. If you don't have one, see [Create Users in AWS IAM](/posts/create-users-in-aws-iam).
 
 Now that you have a user, lets configure the AWS CLI.
 

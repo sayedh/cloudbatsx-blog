@@ -1,24 +1,25 @@
 // src/app/layout.tsx
 import { Footer } from "@/app/_components/site";
-import { HOME_OG_IMAGE_URL, SITE_NAME } from "@/lib/constants";
-import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import type { Metadata, Viewport } from "next";
+import { Sora, DM_Sans, JetBrains_Mono } from "next/font/google";
 import cn from "classnames";
-import { ThemeSwitcher } from "./_components/theme-switcher";
+import { ThemeScript } from "./_components/theme-switcher";
+import { SiteNav } from "./_components/site-nav";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 
-// Font configurations
-const inter = Inter({
+// Brand fonts — siblings of cloudbats.com (Sora display + DM Sans body)
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sora",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
@@ -29,12 +30,37 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} | DevOps & Cloud Engineering Blog`,
-  description:
-    "Tutorials and insights on AWS, Terraform, networking, and full-stack development by Cloud.",
-  openGraph: {
-    images: [HOME_OG_IMAGE_URL],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — cloud, networks & practical AI, written down`,
+    template: `%s | ${SITE_NAME}`,
   },
+  description:
+    "The cloudbats engineering blog: real builds that helped real teams — cloud, networks, and practical AI, with the code to back it up.",
+  openGraph: {
+    title: `${SITE_NAME} — cloud, networks & practical AI, written down`,
+    description:
+      "Real builds that helped real teams — cloud, networks, and practical AI, with the code to back it up.",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — cloud, networks & practical AI, written down`,
+    description:
+      "Real builds that helped real teams — cloud, networks, and practical AI, with the code to back it up.",
+  },
+  robots: { index: true, follow: true },
+  alternates: { canonical: "/" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
 };
 
 export default function RootLayout({
@@ -45,11 +71,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(
-        inter.variable,
-        spaceGrotesk.variable,
-        jetbrainsMono.variable
-      )}
+      className={cn(sora.variable, dmSans.variable, jetbrainsMono.variable)}
       suppressHydrationWarning
     >
       <head>
@@ -78,28 +100,12 @@ export default function RootLayout({
         />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
         <meta name="msapplication-TileColor" content="#0f172a" />
-        <meta
-          name="msapplication-config"
-          content="/favicon/browserconfig.xml"
-        />
-        <meta name="theme-color" content="#0f172a" />
-        <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+        <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
       </head>
-      <body
-        className={cn(
-          inter.className,
-          "font-body antialiased",
-          "bg-white dark:bg-slate-950",
-          "text-slate-900 dark:text-slate-100",
-          "transition-colors duration-300"
-        )}
-      >
-        
-        {/* Theme switcher */}
-        <ThemeSwitcher />
-        
-        
+      <body className="font-body antialiased">
+        <ThemeScript />
         <div className="min-h-screen flex flex-col">
+          <SiteNav />
           <div className="flex-1">{children}</div>
           <Footer />
         </div>

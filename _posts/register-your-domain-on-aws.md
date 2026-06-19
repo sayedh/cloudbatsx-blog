@@ -1,8 +1,9 @@
 ---
     title: "How to register your domain on AWS"
-    excerpt: "Creating users allows you to assign specific privileges while blocking other AWS features"
+    excerpt: "Register a domain in AWS Route 53 in a few clicks, so it's ready to connect to your AWS services."
     coverImage: "/images/image.png"
     date: "2022-06-04T00:00:00.000Z"
+    focusArea: "AWS"
     author:
         name: Sayed Haque
         picture: "/assets/blog/authors/sayed.jpg"

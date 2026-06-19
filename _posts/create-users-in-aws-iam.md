@@ -3,6 +3,7 @@
     excerpt: "Creating users allows you to assign specific privileges while blocking other AWS features"
     coverImage: "/images/image-27.png"
     date: "2022-06-26T00:00:00.000Z"
+    focusArea: "AWS"
     author:
         name: Sayed Haque
         picture: "/assets/blog/authors/sayed.jpg"
@@ -53,6 +54,4 @@ These you must keep safe, as anyone with these keys will be able to access that 
 
 CONGRATS!! Now you have a user setup on your account.
 
-Check out how I use this user with my AWS CLI.
-
-https://cloudbats.com/2022/06/28/install-and-configure-aws-cli-on-your-computer/
+Check out how I use this user with my AWS CLI in [Install and configure AWS CLI on your computer](/posts/install-and-configure-aws-cli-on-your-computer).
